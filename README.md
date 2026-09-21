@@ -8,6 +8,371 @@ This page contains notes primarily from Adrian Cantrill’s [AWS Solutions Archi
 - https://github.com/alozano-77/AWS-SAA-C02-Course#16-elastic-cloud-compute-ec2
 - https://tutorialsdojo.com/aws-cheat-sheets/
 
+## 📑 Table of Contents
+
+Every section below is collapsed. Click a section name to jump to it, or expand it to jump straight to a topic.
+
+<details>
+<summary><b>1. <a href="#accounts---identity-and-access-management-iam-basics">🧔 Accounts - Identity and Access Management (IAM) Basics</a></b></summary>
+
+- [Account and IAM Basics](#account-and-iam-basics)
+- [IAM Access Keys](#iam-access-keys)
+
+</details>
+
+<details>
+<summary><b>2. <a href="#%EF%B8%8Fcloud-computing-fundamentals">☁️ Cloud Computing Fundamentals</a></b></summary>
+
+- [Essential Characteristics of Cloud Computing](#essential-characteristics-of-cloud-computing)
+- [Public vs Private vs Hybrid vs Multi Cloud](#public-vs-private-vs-hybrid-vs-multi-cloud)
+- [Cloud Service Models](#cloud-service-models)
+- [🗣YAML - YAML Ain't Markup Language](#yaml---yaml-aint-markup-language)
+
+</details>
+
+<details>
+<summary><b>3. <a href="#-aws-fundamentals">🐣 AWS Fundamentals</a></b></summary>
+
+- [Public vs Private Services](#public-vs-private-services)
+- [AWS Global Infrastructure](#aws-global-infrastructure)
+- [Virtual Private Cloud (VPC) Basics](#virtual-private-cloud-vpc-basics)
+- [Elastic Compute Cloud (EC2) Basics](#elastic-compute-cloud-ec2-basics)
+- [Simple Storage Service (S3) Basics](#simple-storage-service-s3-basics)
+- [CloudFormation Basics](#cloudformation-basics)
+- [CloudWatch Basics](#cloudwatch-basics)
+- [Shared Responsibility Model](#shared-responsibility-model)
+- [High-Availability (HA) vs Fault-Tolerance (FT) vs Disaster Recovery (DR)](#high-availability-ha-vs-fault-tolerance-ft-vs-disaster-recovery-dr)
+- [Domain Name System (DNS) Basics](#domain-name-system-dns-basics)
+- [Route53 Fundamentals](#route53-fundamentals)
+- [DNS Record Types](#dns-record-types)
+
+</details>
+
+<details>
+<summary><b>4. <a href="#-iam-account-and-aws-organizations">🦠 IAM, Account and AWS Organizations</a></b></summary>
+
+- [IAM Identity Policies](#iam-identity-policies)
+- [IAM Users and ARNs](#iam-users-and-arns)
+- [Amazon Resource Name (ARN)](#amazon-resource-name-arn)
+- [IAM Groups](#iam-groups)
+- [IAM Roles](#iam-roles)
+- [Service-linked Roles & PassRole](#service-linked-roles--passrole)
+- [AWS Organizations](#aws-organizations)
+- [Service Control Policies (SCP)](#service-control-policies-scp)
+- [CloudWatch Logs](#cloudwatch-logs)
+- [CloudTrail Essentials](#cloudtrail-essentials)
+- [AWS Control Tower](#aws-control-tower)
+
+</details>
+
+<details>
+<summary><b>5. <a href="#-simple-storage-service-s3">💾 Simple Storage Service S3</a></b></summary>
+
+- [S3 Security](#s3-security)
+- [S3 Static Hosting](#s3-static-hosting)
+- [Object Versioning & MFA Delete](#object-versioning--mfa-delete)
+- [S3 Performance Optimization](#s3-performance-optimization)
+- [Key Management Service (KMS)](#key-management-service-kms)
+- [S3 Encryption](#s3-encryption)
+- [S3 Object Storage Classes](#s3-object-storage-classes)
+- [S3 Lifecycle Configuration](#s3-lifecycle-configuration)
+- [S3 Replication](#s3-replication)
+- [S3 Presigned URLs](#s3-presigned-urls)
+- [S3 Select and Glacier Select](#s3-select-and-glacier-select)
+- [S3 Events](#s3-events)
+- [S3 Access Logs](#s3-access-logs)
+- [S3 Object Lock](#s3-object-lock)
+
+</details>
+
+<details>
+<summary><b>6. <a href="#virtual-private-cloud-vpc">⛅ Virtual Private Cloud (VPC)</a></b></summary>
+
+- [VPC Sizing and Structure](#vpc-sizing-and-structure)
+- [Custom VPCs](#custom-vpcs)
+- [VPC Subnets](#vpc-subnets)
+- [VPC Routing and Internet Gateway](#vpc-routing-and-internet-gateway)
+- [Stateful vs Stateless Firewalls](#stateful-vs-stateless-firewalls)
+- [Network Access Control Lists (NACL)](#network-access-control-lists-nacl)
+- [VPC Security Groups (SG)](#vpc-security-groups-sg)
+- [Network Address Translation (NAT) and NAT Gateways](#network-address-translation-nat-and-nat-gateways)
+
+</details>
+
+<details>
+<summary><b>7. <a href="#elastic-compute-cloud-ec2-basics-1">🖥 Elastic Compute Cloud (EC2) Basics</a></b></summary>
+
+- [Virtualization 101](#virtualization-101)
+- [EC2 Architecture and Resilience](#ec2-architecture-and-resilience)
+- [EC2 Instance Types](#ec2-instance-types)
+- [Storage Refresher](#storage-refresher)
+- [Elastic Block Storage (EBS)](#elastic-block-storage-ebs)
+- [EBS Volume Types - General Purpose SSD](#ebs-volume-types---general-purpose-ssd)
+- [GP2](#gp2)
+- [Provisioned IOPS SSD (io1/2)](#provisioned-iops-ssd-io12)
+- [HDD-Based](#hdd-based)
+- [Instance Store Volumes](#instance-store-volumes)
+- [Instance Store vs EBS](#instance-store-vs-ebs)
+- [EBS Snapshots](#ebs-snapshots)
+- [CLI Commands to Mount Filesystem on a EBS Volume](#cli-commands-to-mount-filesystem-on-a-ebs-volume)
+- [EBS Encryption](#ebs-encryption)
+- [(Elastic) Network Interfaces, Instance IPs and DNS](#elastic-network-interfaces-instance-ips-and-dns)
+- [DEMO: Installation of Wordpress on EC2](#demo-installation-of-wordpress-on-ec2)
+- [Amazon Machine Images (AMI)](#amazon-machine-images-ami)
+- [DEMO: A4L AMI](#demo-a4l-ami)
+- [EC2 Purchase Options (Launch Types)](#ec2-purchase-options-launch-types)
+- [Reserved Instances](#reserved-instances)
+- [Instance Status Checks & Auto Recovery](#instance-status-checks--auto-recovery)
+- [Horizontal and Vertical Scaling](#horizontal-and-vertical-scaling)
+- [Instance Metadata](#instance-metadata)
+
+</details>
+
+<details>
+<summary><b>8. <a href="#-containers--ecs">🐳 Containers &amp; ECS</a></b></summary>
+
+- [Introduction to Containers](#introduction-to-containers)
+- [Elastic Container Service (ECS) Concepts](#elastic-container-service-ecs-concepts)
+- [ECS - Cluster Mode](#ecs---cluster-mode)
+- [Elastic Container Registry (ECR)](#elastic-container-registry-ecr)
+- [Kubernetes 101](#kubernetes-101)
+- [Elastic Kubernetes Service (EKS) 101](#elastic-kubernetes-service-eks-101)
+
+</details>
+
+<details>
+<summary><b>9. <a href="#-advanced-ec2">🉐 Advanced EC2</a></b></summary>
+
+- [Bootstrapping EC2 Using User Data](#bootstrapping-ec2-using-user-data)
+- [Enhanced Bootstrapping with CFN-INIT](#enhanced-bootstrapping-with-cfn-init)
+- [EC2 Instance Roles & Profile](#ec2-instance-roles--profile)
+- [AWS Systems Manager Parameter Store](#aws-systems-manager-parameter-store)
+- [System and Application Logging on EC2](#system-and-application-logging-on-ec2)
+- [EC2 Placement Groups](#ec2-placement-groups)
+- [EC2 Dedicated Hosts](#ec2-dedicated-hosts)
+- [Enhanced Networking & EBS Optimized](#enhanced-networking--ebs-optimized)
+
+</details>
+
+<details>
+<summary><b>10. <a href="#%EF%B8%8F-route-53---global-dns">🛣️ Route 53 - Global DNS</a></b></summary>
+
+- [R53 Public Hosted Zones](#r53-public-hosted-zones)
+- [R53 Private Hosted Zones](#r53-private-hosted-zones)
+- [CNAME vs R53 Alias](#cname-vs-r53-alias)
+- [R53 Health Checks](#r53-health-checks)
+- [❗Failover: Active/Passive ❗](#failover-activepassive-)
+- [Routing Policy 1: Simple Routing](#routing-policy-1-simple-routing)
+- [Routing Policy 2: Failover Routing](#routing-policy-2-failover-routing)
+- [Routing Policy 3: Multi Value Routing](#routing-policy-3-multi-value-routing)
+- [Routing Policy 4: Weighted Routing](#routing-policy-4-weighted-routing)
+- [Routing Policy 5: Latency Routing](#routing-policy-5-latency-routing)
+- [Routing Policy 6: Geolocation Routing](#routing-policy-6-geolocation-routing)
+- [Routing Policy 7: Geoproximity Routing](#routing-policy-7-geoproximity-routing)
+- [R53 Interoperability](#r53-interoperability)
+
+</details>
+
+<details>
+<summary><b>11. <a href="#-relational-database-service-rds">💽 Relational Database Service (RDS)</a></b></summary>
+
+- [ACID vs BASE](#acid-vs-base)
+- [Database on EC2](#database-on-ec2)
+- [Relational Database Service (RDS)](#relational-database-service-rds)
+- [RDS Multi AZ](#rds-multi-az)
+- [RBD Backups and Restores](#rbd-backups-and-restores)
+- [RDS Read-Replicas](#rds-read-replicas)
+- [Amazon RDS Security](#amazon-rds-security)
+- [Amazon Aurora Architecture](#amazon-aurora-architecture)
+- [Aurora Serverless](#aurora-serverless)
+- [Aurora Global Database](#aurora-global-database)
+- [Aurora Multi-Master Writes](#aurora-multi-master-writes)
+- [Database Migration Service (DMS)](#database-migration-service-dms)
+
+</details>
+
+<details>
+<summary><b>12. <a href="#network-storage--data-lifecycle">🧬 Network Storage &amp; Data Lifecycle</a></b></summary>
+
+- [Elastic File System (EFS) Architecture](#elastic-file-system-efs-architecture)
+- [AWS Backup](#aws-backup)
+
+</details>
+
+<details>
+<summary><b>13. <a href="#%EF%B8%8F-high-availability-ha--scaling">⚖️ High Availability (HA) &amp; Scaling</a></b></summary>
+
+- [Regional and Global AWS Architecture](#regional-and-global-aws-architecture)
+- [Evolution of Elastic Load Balancers (ELB)](#evolution-of-elastic-load-balancers-elb)
+- [Elastic Load Balancer Architecture (ELB)](#elastic-load-balancer-architecture-elb)
+- [Application Load Balancing (ALB) vs Network Load Balancing (NLB)](#application-load-balancing-alb-vs-network-load-balancing-nlb)
+- [Launch Configuration and Templates](#launch-configuration-and-templates)
+- [Auto Scaling Groups](#auto-scaling-groups)
+- [ASG Scaling Policies](#asg-scaling-policies)
+- [ASG Lifecycle Hooks](#asg-lifecycle-hooks)
+- [ASG Health Check Comparison - EC2 vs ELB](#asg-health-check-comparison---ec2-vs-elb)
+- [SSL Offload & Session Stickiness](#ssl-offload--session-stickiness)
+- [Gateway Load Balancers (GWLB)](#gateway-load-balancers-gwlb)
+
+</details>
+
+<details>
+<summary><b>14. <a href="#-serverless-and-application-services">🌈 Serverless and Application Services</a></b></summary>
+
+- [Architecture Deep Dive](#architecture-deep-dive)
+- [AWS Lambda](#aws-lambda)
+- [Invocation](#invocation)
+- [CloudWatchEvents and EventBridge](#cloudwatchevents-and-eventbridge)
+- [Serverless Architecture](#serverless-architecture)
+- [Simple Notification Service (SNS)](#simple-notification-service-sns)
+- [Step Functions](#step-functions)
+- [API Gateway](#api-gateway)
+- [Simple Queue Service (SQS)](#simple-queue-service-sqs)
+- [SQS Standard vs FIFO](#sqs-standard-vs-fifo)
+- [SQS Delay Queues](#sqs-delay-queues)
+- [SQS Dead-Letter Queues](#sqs-dead-letter-queues)
+- [Amazon Kinesis Data Streams](#amazon-kinesis-data-streams)
+- [Amazon Kinesis Data Firehose](#amazon-kinesis-data-firehose)
+- [Amazon Kinesis Data Analytics](#amazon-kinesis-data-analytics)
+- [Amazon Kinesis Video Streams](#amazon-kinesis-video-streams)
+- [Amazon Cognito - User and Identity Pools](#amazon-cognito---user-and-identity-pools)
+- [AWS Glue](#aws-glue)
+- [Amazon MQ](#amazon-mq)
+- [Amazon AppFlow](#amazon-appflow)
+
+</details>
+
+<details>
+<summary><b>15. <a href="#-global-content-delivery-and-optimization">🌍 GLOBAL CONTENT DELIVERY AND OPTIMIZATION</a></b></summary>
+
+- [CloudFront Architecture](#cloudfront-architecture)
+- [CloudFront Behaviors](#cloudfront-behaviors)
+- [CF TTL and Invalidations](#cf-ttl-and-invalidations)
+- [AWS Certificate Manager (ACM)](#aws-certificate-manager-acm)
+- [CloudFront and SSL/TLS](#cloudfront-and-ssltls)
+- [Origin Types and Architecture](#origin-types-and-architecture)
+- [Securing CF and S3 using OAI](#securing-cf-and-s3-using-oai)
+- [CloudFront Private Distributions & Behavior -  Signed URLs & Cookies](#cloudfront-private-distributions--behavior----signed-urls--cookies)
+- [Lambda@Edge](#lambdaedge)
+- [AWS Global Accelerator](#aws-global-accelerator)
+
+</details>
+
+<details>
+<summary><b>16. <a href="#-advanced-vpc-networking">🪐 ADVANCED VPC Networking</a></b></summary>
+
+- [VPC Flow Logs](#vpc-flow-logs)
+- [Egress-Only Internet Gateway](#egress-only-internet-gateway)
+- [VPC Endpoints (Gateway)](#vpc-endpoints-gateway)
+- [VPC Endpoints (Interface)](#vpc-endpoints-interface)
+- [VPC Peering](#vpc-peering)
+
+</details>
+
+<details>
+<summary><b>17. <a href="#%EF%B8%8F-hybrid-environments-and-migration">🏞️ Hybrid Environments and Migration</a></b></summary>
+
+- [Border Gateway Protocol 101](#border-gateway-protocol-101)
+- [IPSec VPN Fundamentals](#ipsec-vpn-fundamentals)
+- [AWS Site-to-Site VPN](#aws-site-to-site-vpn)
+- [Direct Connect (DX) Concepts](#direct-connect-dx-concepts)
+- [Direct Connect (DX) Resilience](#direct-connect-dx-resilience)
+- [AWS Transit Gateway (TGW)](#aws-transit-gateway-tgw)
+- [Storage Gateway - Volume](#storage-gateway---volume)
+- [Storage Gateway Tape - VTL Mode](#storage-gateway-tape---vtl-mode)
+- [Storage Gateway - File Mode](#storage-gateway---file-mode)
+- [Snowball & Snowmobile](#snowball--snowmobile)
+- [AWS Directory Service](#aws-directory-service)
+- [AWS DataSync](#aws-datasync)
+- [FSx for Windows File Server](#fsx-for-windows-file-server)
+- [FSx for Lustre](#fsx-for-lustre)
+- [AWS Transfer Family](#aws-transfer-family)
+
+</details>
+
+<details>
+<summary><b>18. <a href="#security-deployment--operations">🔐 Security, Deployment &amp; Operations</a></b></summary>
+
+- [AWS Secrets Manager](#aws-secrets-manager)
+- [Application Layer (L7) Firewall](#application-layer-l7-firewall)
+- [Web Application Firewall (WAF)](#web-application-firewall-waf)
+- [AWS Shield](#aws-shield)
+- [CloudHSM](#cloudhsm)
+- [AWS Config](#aws-config)
+- [Amazon Macie](#amazon-macie)
+- [Amazon Inspector](#amazon-inspector)
+- [Amazon GuardDuty](#amazon-guardduty)
+
+</details>
+
+<details>
+<summary><b>19. <a href="#%E2%80%8D-infrastructure-as-code-cloudformation">🏢🧑‍💻 Infrastructure as Code (CloudFormation)</a></b></summary>
+
+- [Physical & Logical Resources](#physical--logical-resources)
+- [Template and Pseudo Parameters](#template-and-pseudo-parameters)
+- [Intrinsic Functions](#intrinsic-functions)
+- [`Fn::GetAZs` and `Fn::Select`](#fngetazs-and-fnselect)
+- [`Mappings`](#mappings)
+- [`Outputs`](#outputs)
+- [`Conditions`](#conditions)
+- [`DependsOn`](#dependson)
+- [`WaitCondition`, `CreationPolicy` and cfn-signal](#waitcondition-creationpolicy-and-cfn-signal)
+- [Nested Stacks](#nested-stacks)
+- [Cross-Stack References](#cross-stack-references)
+- [StackSets](#stacksets)
+- [`DeletionPolicy`](#deletionpolicy)
+- [Stack Roles](#stack-roles)
+- [CloudFormationInit (CFN-INIT)](#cloudformationinit-cfn-init)
+- [cfn-hup](#cfn-hup)
+- [ChangeSets](#changesets)
+- [Custom Resources](#custom-resources)
+
+</details>
+
+<details>
+<summary><b>20. <a href="#nosql-databases--dynamodb-">👃NoSQL Databases &amp; DynamoDB 🧨</a></b></summary>
+
+- [DynamoDB - Architecture](#dynamodb---architecture)
+- [Operations, Consistency and Performance](#operations-consistency-and-performance)
+- [DynamoDB Local and Global Secondary Indexes](#dynamodb-local-and-global-secondary-indexes)
+- [Streams and Triggers](#streams-and-triggers)
+- [Global Tables](#global-tables)
+- [DynamoDB Accelerator (DAX)](#dynamodb-accelerator-dax)
+- [DynamoDB TTL](#dynamodb-ttl)
+- [Amazon Athena](#amazon-athena)
+- [ElastiCache](#elasticache)
+- [Redshift Architecture](#redshift-architecture)
+- [Redshift Resilience and Recovery](#redshift-resilience-and-recovery)
+
+</details>
+
+<details>
+<summary><b>21. <a href="#machine-learning">🤖Machine Learning📘</a></b></summary>
+
+- [Amazon Comprehend](#amazon-comprehend)
+- [Amazon Kendra](#amazon-kendra)
+- [Amazon Lex](#amazon-lex)
+- [Amazon Polly](#amazon-polly)
+- [Amazon Rekognition](#amazon-rekognition)
+- [Amazon Textract](#amazon-textract)
+- [Amazon Transcribe](#amazon-transcribe)
+- [Amazon Translate](#amazon-translate)
+- [Amazon Forecast](#amazon-forecast)
+- [Amazon Fraud Detector](#amazon-fraud-detector)
+- [Amazon SageMaker](#amazon-sagemaker)
+- [📍AWS Local Zones](#aws-local-zones)
+
+</details>
+
+<details>
+<summary><b>22. <a href="#-exam">📝 Exam</a></b></summary>
+
+- [General AWS Exam Technique](#general-aws-exam-technique)
+- [Question Technique](#question-technique)
+- [Services not covered in course](#services-not-covered-in-course)
+
+</details>
+
 
 # 🧔 Accounts - Identity and Access Management (IAM) Basics
 
